@@ -1,0 +1,70 @@
+WinPlay 0.3.1 — origem, modificações e licenças
+
+BASE
+https://github.com/shihabal3amri/DiPlay
+Commit 4487c689bfdd3baab12de67a993a671b67939eb7.
+DiPlay deriva de https://github.com/shilapi/xcertplay (GPL-3.0).
+O port e seu fonte são distribuídos sob GPL-3.0; texto em licenses/DiPlay-GPL-3.0.txt.
+A interface desktop é nova. A UI Android/DiAuto AGPL não foi incorporada.
+
+FONTE INCORPORADO
+UPSTREAM-SHA256.csv identifica cada arquivo copiado, caminho original, hash do
+original, hash entregue e condição de adaptação.
+src/upstream/: protocolo iAP2, clientes de controle, MFi, Base64Compat e
+TouchLatencyProbe. Cópias integrais preservadas sem alteração, com uma exceção:
+IphoneUsbException.kt extrai a classe de IphoneUsbHost.kt:593-598, acrescentando
+somente package, import e comentário de origem.
+src/adapted/: arquivos de airplay/ do upstream, exceto CarPlayMediaButton.kt.
+Alterações: android.util.Log para PlatformLog; ChaCha usa buffers diretos do JVM;
+prioridade de áudio via Thread do JVM; keepalive TCP sem APIs Linux/Android.
+Os demais arquivos desse diretório permanecem com a implementação original.
+src/main/ e src/native/: interface, adaptadores Windows, decodificadores,
+preparação da identidade e orquestração implementados para este port.
+src/test/: testes upstream sem alteração, exceto AirPlayInfoPlistTest.kt, que usa
+o encoder Opus nativo do Windows em lugar do encoder Android/Concentus.
+DesktopProtocolTest.kt e ReceiverIntegrationTest.kt são testes novos do port.
+
+DEPENDÊNCIAS
+Kotlin standard library 2.2.10: Apache-2.0, incorporada ao JAR pelo compilador.
+Bouncy Castle bcprov-jdk18on 1.79: Bouncy Castle license (MIT-style).
+JNA 5.17.0: Apache-2.0, uma das alternativas oferecidas pelo projeto.
+JavaCPP 1.5.11 e presets FFmpeg 7.1-1.5.11: Apache-2.0 ou GPL-2.0 com Classpath
+Exception, conforme JavaCPP-LICENSE.txt.
+FFmpeg 7.1: build padrão Bytedeco com --enable-version3 e sem --enable-gpl,
+LGPL-3.0-or-later. Textos LGPLv3/GPLv3 incluídos em licenses/.
+JmDNS 3.6.3: Apache-2.0. SLF4J 2.0.16: MIT.
+Eclipse Temurin/OpenJDK 21: GPL-2.0 com Classpath Exception; runtime/legal/
+preserva os avisos. TOOLCHAIN.json identifica release, origem e hash.
+Somente testes/build: JUnit 4.13.2 (EPL-1.0), Hamcrest 1.3 (BSD).
+Os JARs são preservados sem modificação e podem ser substituídos, com rebuild
+quando necessário; o fonte da integração e o script de build são entregues.
+DEPENDENCIES.sha256 registra os hashes das bibliotecas utilizadas.
+
+FONTES DAS BIBLIOTECAS NATIVAS E RECEITA DO BUILD
+https://github.com/bytedeco/javacpp/tree/1.5.11
+https://github.com/bytedeco/javacpp-presets/tree/1.5.11/ffmpeg
+https://github.com/bytedeco/javacpp-presets/blob/1.5.11/ffmpeg/cppbuild.sh
+https://github.com/FFmpeg/FFmpeg/tree/n7.1
+A receita do preset fixa dependências e patches do build FFmpeg utilizado.
+https://github.com/jmdns/jmdns
+https://github.com/java-native-access/jna/tree/5.17.0
+
+AUTENTICAÇÃO EXPERIMENTAL
+Nenhuma identidade de acessório está embutida no fonte ou no ZIP portátil.
+Na primeira conexão, IdentityProvisioner baixa o APK público oficial DiPlay 0.2.21,
+confere o SHA-256 fixado e importa somente os dois arquivos explicitamente
+publicados em assets/offline-mfi/. A origem e o hash constam em README.txt.
+Essa identidade não é relicenciada como fonte nem foi provisionada pela Apple
+para o port Windows. Sua aceitação pelo iOS permanece sujeita a validação.
+O app não publica a identidade nem a inclui em relatórios.
+
+INTERFACE 0.3.0
+FlatLaf 3.6.1, Apache-2.0: https://github.com/JFormDesigner/FlatLaf/tree/3.6.1
+Texto incluído em licenses/FlatLaf-Apache-2.0.txt. JAR distribuído sem alteração.
+Interface, ícones vetoriais e gerador de ícone Windows desenvolvidos neste port.
+UiSessionSupportTest.kt e UiLayoutTest.kt são testes novos da interface.
+Os arquivos de conexão e mídia foram mantidos byte a byte em relação à versão
+0.2.0 confirmada pelo usuário; a nova camada trata apresentação e ciclo de UI.
+
+WinPlay e o novo nome deste port para Windows. A origem DiPlay e os avisos de licenca foram mantidos.
+Na versao 0.3.1, somente os rotulos de apresentacao do receptor foram renomeados; identificadores persistentes e armazenamento foram preservados.
